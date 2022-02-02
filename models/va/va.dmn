@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             namespace="https://ewib/validation-1"
+             name="ewib-validation-1"
+             id="_f39bb092-87e0-4c07-94fb-378ab311ce67">
+    <description>Walidacje oparte na EWIB</description>
+    <decision name="Nazwa Instytucji" id="_2c6cb50d-4d9b-4b32-95df-ccf261c119de">
+        <variable typeRef="string" name="Nazwa Instytucji"/>
+        <informationRequirement id="_22bbce31-3bfe-411f-a242-e77a27d34f1d">
+            <requiredInput href="#_c495e611-1de6-40aa-8729-6b992afd19c5"/>
+        </informationRequirement>
+        <literalExpression>
+            <text>"Hello " + NrRozliczeniowy</text>
+        </literalExpression>
+    </decision>
+    <inputData name="NrRozliczeniowy" id="_c495e611-1de6-40aa-8729-6b992afd19c5">
+        <variable typeRef="string" name="NrRozliczeniowy"/>
+    </inputData>
+</definitions>
