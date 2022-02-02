@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+    namespace="https://ewib/validation-2"
+    name="ewib-validation-2"
+    id="_f39bb092-87e0-4c07-94fb-378ab311ce67">
+    <description>Wyszukiwanie instytucji wg wzorca</description>
+    <inputData name="Wzorzec" id="_c495e611-1de6-40aa-8729-6b992afd19c5">
+        <variable typeRef="string" name="Wzorzec"/>
+    </inputData>
+</definitions>
