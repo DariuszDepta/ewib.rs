@@ -26,7 +26,6 @@ fn main() {
 }
 
 fn parse_input_data(xml: &str) -> Result<()> {
-  println!("Parsing input data...");
   match roxmltree::Document::parse(xml) {
     Ok(document) => {
       let instytucje_node = document.root_element();
@@ -47,13 +46,10 @@ fn parse_input_data(xml: &str) -> Result<()> {
 fn parse_instytucje(node: &Node) -> Result<()> {
   for ref child_node in node.children().filter(|n| n.tag_name().name() == NODE_INSTYTUCJA) {
     let nazwa_instytucji = required_child_required_content(child_node, NODE_NAZWA_INSTYTUCJI)?;
-    let nr_instytucji = required_child_required_content(child_node, NODE_NR_INSTYTUCJI)?;
+    let _nr_instytucji = required_child_required_content(child_node, NODE_NR_INSTYTUCJI)?;
     let numery_rozliczeniowe = parse_jednostki(child_node)?;
     if !numery_rozliczeniowe.is_empty() {
-      println!("{} ({}) [{}]", nazwa_instytucji, nr_instytucji, numery_rozliczeniowe.len());
-      for numer_rozliczeniowy in numery_rozliczeniowe {
-        println!("    {}", numer_rozliczeniowy);
-      }
+      print_as_rule(&nazwa_instytucji, &numery_rozliczeniowe);
     }
   }
   Ok(())
@@ -80,7 +76,7 @@ fn parse_numery_rozliczeniowe(node: &Node) -> Result<Vec<String>> {
 }
 
 /// Returns required text content of the specified node.
-pub fn required_content(node: &Node) -> Result<String> {
+fn required_content(node: &Node) -> Result<String> {
   if let Some(text) = node.text() {
     Ok(text.to_owned())
   } else {
@@ -89,7 +85,7 @@ pub fn required_content(node: &Node) -> Result<String> {
 }
 
 /// Returns the required text content of the required child node.
-pub fn required_child_required_content(node: &Node, child_name: &str) -> Result<String> {
+fn required_child_required_content(node: &Node, child_name: &str) -> Result<String> {
   if let Some(child_node) = node.children().find(|n| n.tag_name().name() == child_name) {
     required_content(&child_node)
   } else {
@@ -110,4 +106,21 @@ fn err_missing_required_content(s: &str) -> EwibError {
 /// Creates an error describing missing child node.
 fn err_missing_required_child_node(s: &str) -> EwibError {
   EwibError(format!("missing required child node '{}'", s))
+}
+
+/// Prints the result as a rule.
+fn print_as_rule(nazwa_instytucji: &str, numery_rozliczeniowe: &Vec<String>) {
+  let template = r#"      <rule>
+          <inputEntry>
+              <text>NUMERY_ROZLICZENIOWE</text>
+          </inputEntry>
+          <outputEntry>
+              <text>NAZWA_INSTYTUCJI</text>
+          </outputEntry>
+      </rule>"#;
+  let nr = numery_rozliczeniowe.iter().map(|n| format!("\"{}\"", n)).collect::<Vec<String>>().join(",");
+  println!(
+    "{}",
+    template.replace("NAZWA_INSTYTUCJI", nazwa_instytucji).replace("NUMERY_ROZLICZENIOWE", &nr)
+  )
 }
