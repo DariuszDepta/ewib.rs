@@ -112,15 +112,13 @@ fn err_missing_required_child_node(s: &str) -> EwibError {
 fn print_as_rule(nazwa_instytucji: &str, numery_rozliczeniowe: &Vec<String>) {
   let template = r#"      <rule>
           <inputEntry>
-              <text>NUMERY_ROZLICZENIOWE</text>
+              <text>#NR#</text>
           </inputEntry>
           <outputEntry>
-              <text>NAZWA_INSTYTUCJI</text>
+              <text>#NI#</text>
           </outputEntry>
       </rule>"#;
+  let ni = format!("\"{}\"", nazwa_instytucji);
   let nr = numery_rozliczeniowe.iter().map(|n| format!("\"{}\"", n)).collect::<Vec<String>>().join(",");
-  println!(
-    "{}",
-    template.replace("NAZWA_INSTYTUCJI", nazwa_instytucji).replace("NUMERY_ROZLICZENIOWE", &nr)
-  )
+  println!("{}", template.replace("#NI#", &ni).replace("#NR#", &nr))
 }
