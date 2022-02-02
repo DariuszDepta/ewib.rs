@@ -15,7 +15,7 @@
                     <text>NrRozliczeniowy</text>
                 </inputExpression>
             </input>
-            <output/>
+            <output label="Nazwa Instytucji"/>
             <rule>
                 <inputEntry>
                     <text>"10100000","10100055","10100068","10100071","10100039","10101010","10101023","10101049","10101078","10101140","10101212","10101238","10101270","10101339","10101371","10101397","10101401","10101469","10101528","10101599","10101674","10101704"</text>
@@ -1133,7 +1133,7 @@
                     <text>"81810000"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Bank Spółdzielczy "Pałuki" w Żninie"</text>
+                    <text>"Bank Spółdzielczy \"Pałuki\" w Żninie"</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -1717,7 +1717,7 @@
                     <text>"84370002","81200003","82640002","84420000","84421010"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Śląski Bank Spółdzielczy "Silesia" w Katowicach"</text>
+                    <text>"Śląski Bank Spółdzielczy \"Silesia\" w Katowicach"</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -2941,7 +2941,7 @@
                     <text>"88980003"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Bank Spółdzielczy "Bank Rolników" w Opolu"</text>
+                    <text>"Bank Spółdzielczy \"Bank Rolników\" w Opolu"</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -3253,7 +3253,7 @@
                     <text>"90210008","90211018","90211021"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Bank Spółdzielczy "Wspólna Praca" w Kutnie"</text>
+                    <text>"Bank Spółdzielczy \"Wspólna Praca\" w Kutnie"</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -3277,7 +3277,7 @@
                     <text>"90420003","90421013","90421026","90421039","90421042","90421055","90421068","90421071","90421084"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Bank Spółdzielczy "MAZOWSZE" w Płocku"</text>
+                    <text>"Bank Spółdzielczy \"MAZOWSZE\" w Płocku"</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -4773,7 +4773,7 @@
                     <text>"70390009"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa "Boże Dary""</text>
+                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa \"Boże Dary\""</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -4797,7 +4797,7 @@
                     <text>"70480003"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa "Śląsk" z siedzibą w Rudzie Śląskiej"</text>
+                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa \"Śląsk\" z siedzibą w Rudzie Śląskiej"</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -4805,7 +4805,7 @@
                     <text>"70520002"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa "Wisła""</text>
+                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa \"Wisła\""</text>
                 </outputEntry>
             </rule>
             <rule>
@@ -4845,7 +4845,7 @@
                     <text>"70990007"</text>
                 </inputEntry>
                 <outputEntry>
-                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa "Świdnik""</text>
+                    <text>"Spółdzielcza Kasa Oszczędnościowo-Kredytowa \"Świdnik\""</text>
                 </outputEntry>
             </rule>
             <rule>

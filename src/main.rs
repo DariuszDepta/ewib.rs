@@ -1,5 +1,8 @@
 extern crate roxmltree;
 
+mod templates;
+
+use crate::templates::{RULE_TEMPLATE, VALIDATION_1_DMN_TEMPLATE};
 use roxmltree::Node;
 use std::fs;
 
@@ -13,11 +16,17 @@ const NODE_NR_INSTYTUCJI: &str = "NrInstytucji";
 const NODE_NR_ROZLICZENIOWY: &str = "NrRozliczeniowy";
 
 /// Common result type.
-pub type Result<T, E = EwibError> = std::result::Result<T, E>;
+type Result<T, E = EwibError> = std::result::Result<T, E>;
 
 /// Common error definition used in EWIB project.
 #[derive(Debug, PartialEq)]
-pub struct EwibError(String);
+struct EwibError(String);
+
+struct Instytucja {
+  nazwa_instytucji: String,
+  nr_instytucji: String,
+  numery_rozliczeniowe: Vec<String>,
+}
 
 fn main() {
   let file_name = "/home/ddepta/Work/ewib.rs/data/plewiba.xml";
@@ -25,6 +34,7 @@ fn main() {
   parse_input_data(&xml).expect("parsing input data failed");
 }
 
+/// Parsers input XML data.
 fn parse_input_data(xml: &str) -> Result<()> {
   match roxmltree::Document::parse(xml) {
     Ok(document) => {
@@ -33,8 +43,11 @@ fn parse_input_data(xml: &str) -> Result<()> {
         return Err(err_unexpected_xml_node(NODE_INSTYTUCJE, instytucje_node.tag_name().name()));
       }
       match parse_instytucje(&instytucje_node) {
+        Ok(instytucje) => {
+          //
+          save_as_dmn_validation_1(&instytucje);
+        }
         Err(reason) => eprint!("{:?}", reason),
-        _ => {}
       }
     }
     Err(reason) => eprint!("{}", reason),
@@ -43,16 +56,19 @@ fn parse_input_data(xml: &str) -> Result<()> {
 }
 
 /// Parses the content of `Instytucje` node.
-fn parse_instytucje(node: &Node) -> Result<()> {
+fn parse_instytucje(node: &Node) -> Result<Vec<Instytucja>> {
+  let mut instytucje = vec![];
   for ref child_node in node.children().filter(|n| n.tag_name().name() == NODE_INSTYTUCJA) {
     let nazwa_instytucji = required_child_required_content(child_node, NODE_NAZWA_INSTYTUCJI)?;
-    let _nr_instytucji = required_child_required_content(child_node, NODE_NR_INSTYTUCJI)?;
+    let nr_instytucji = required_child_required_content(child_node, NODE_NR_INSTYTUCJI)?;
     let numery_rozliczeniowe = parse_jednostki(child_node)?;
-    if !numery_rozliczeniowe.is_empty() {
-      print_as_rule(&nazwa_instytucji, &numery_rozliczeniowe);
-    }
+    instytucje.push(Instytucja {
+      nazwa_instytucji,
+      nr_instytucji,
+      numery_rozliczeniowe,
+    })
   }
-  Ok(())
+  Ok(instytucje)
 }
 
 /// Parses the list of nodes `Jednostka`.
@@ -109,16 +125,20 @@ fn err_missing_required_child_node(s: &str) -> EwibError {
 }
 
 /// Prints the result as a rule.
-fn print_as_rule(nazwa_instytucji: &str, numery_rozliczeniowe: &Vec<String>) {
-  let template = r#"      <rule>
-          <inputEntry>
-              <text>#NR#</text>
-          </inputEntry>
-          <outputEntry>
-              <text>#NI#</text>
-          </outputEntry>
-      </rule>"#;
-  let ni = format!("\"{}\"", nazwa_instytucji);
-  let nr = numery_rozliczeniowe.iter().map(|n| format!("\"{}\"", n)).collect::<Vec<String>>().join(",");
-  println!("{}", template.replace("#NI#", &ni).replace("#NR#", &nr))
+fn save_as_dmn_validation_1(instytucje: &[Instytucja]) {
+  let mut rules = String::new();
+  for instytucja in instytucje {
+    if !instytucja.numery_rozliczeniowe.is_empty() {
+      let ni = format!("\"{}\"", instytucja.nazwa_instytucji.replace("\"", "\\\""));
+      let nr = instytucja
+        .numery_rozliczeniowe
+        .iter()
+        .map(|n| format!("\"{}\"", n))
+        .collect::<Vec<String>>()
+        .join(",");
+      rules.push_str(&format!("{}\n", RULE_TEMPLATE.replace("#NI#", &ni).replace("#NR#", &nr)));
+    }
+  }
+  fs::write("./models/va/va.dmn", format!("{}", VALIDATION_1_DMN_TEMPLATE.replace("#RULES#", &rules))).expect("writing validation model 1 failed");
+  println!("Validation 1 model saved.");
 }
